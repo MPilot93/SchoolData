@@ -34,7 +34,7 @@ namespace Persister
             return command.ExecuteNonQuery() > 0;
         }
 
-            public IEnumerable<Student> GetStudent(int IdStudent)
+        public IEnumerable<Student> GetStudent(int IdStudent)
         {
 
             var sql = @"
