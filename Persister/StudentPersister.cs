@@ -11,62 +11,93 @@ namespace Persister
             ConnectionString = connectionString;
         }
 
-        public bool Add(Student student)
+        public int Add(Student student)
         {
             var sql = @"
                         INSERT INTO [dbo].[Student]
-                                   ([IdStudent]
-                                   ,[IdPerson]
+                                   ([IdPerson]
                                    ,[Matricola]
-                                   ,[DataIscrizione]
+                                   ,[DataIscrizione])
                                    
                              VALUES
-                                   (@IdStudent
-                                   ,@IdPerson
+                                   (@IdPerson
                                    ,@Matricola
-                                   ,@DataIscrizione)";
+                                   ,@DataIscrizione);SELECT @@IDENTITY AS 'Identity';";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@IdStudent", student.IdStudent);
-            command.Parameters.AddWithValue("@IdPerson", student.IdPerson);
+            command.Parameters.AddWithValue("@IdPerson", student.Id);
             command.Parameters.AddWithValue("@Matricola", student.Matricola);
             command.Parameters.AddWithValue("@DataIscrizione", student.DataIscrizione);
-            
-            return command.ExecuteNonQuery() > 0;
+
+            return Convert.ToInt32(command.ExecuteScalar());
         }
 
-        public IEnumerable<Student> GetStudent(int IdStudent)
+        public Student GetStudent(int IdStudent)
         {
 
-            var sql = @"
-                           SELECT [IdStudent]
-                          ,[IdPerson]
-                          ,[Matricola]
-                          ,[DataIscrizione]
-
-
-                      FROM[dbo].[Student]";
+            var sql = @"select p.Id,p.Name,p.Gender,p.Surname,p.BirthDay,p.Address,s.IdStudente,s.DataIscrizione,s.Matricola from Person p 
+                        join Student s on p.Id = s.IdPerson where s.IdStudente=@IdStudente";
 
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-           
+
+            command.Parameters.AddWithValue("@IdStudente", IdStudent);
             var reader = command.ExecuteReader();
+            Student result = null;
             while (reader.Read())
             {
-                yield return new Student
+                result = new Student
                 {
+                    Address = reader["Address"].ToString(),
+                    Birthday = Convert.ToDateTime(reader["BirthDay"]),
+                    Gender = reader["Gender"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Surname = reader["Surname"].ToString(),
                     DataIscrizione = Convert.ToDateTime(reader["DataIscrizione"]),
-                    IdStudent = Convert.ToInt32(reader["IdStudent"]),
-                    IdPerson = Convert.ToInt32(reader["IdPerson"]),
+                    IdStudent = Convert.ToInt32(reader["IdStudente"]),
+                    Id = Convert.ToInt32(reader["Id"]),
                     Matricola = reader["Matricola"].ToString(),
                 };
 
             }
+            return result;
 
+        }
+
+
+        public IEnumerable<Student> GetStudent()
+        {
+
+            var sql = @"select p.Id,p.Name,p.Gender,p.Surname,p.BirthDay,p.Address,s.IdStudente,s.DataIscrizione,s.Matricola from Person p 
+                        join Student s on p.Id = s.IdPerson";
+
+
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(sql, connection);
+
+            var reader = command.ExecuteReader();
+            Student result = null;
+            while (reader.Read())
+            {
+                yield return new Student
+                {
+                    Address = reader["Address"].ToString(),
+                    Birthday = Convert.ToDateTime(reader["BirthDay"]),
+                    Gender = reader["Gender"].ToString(),
+                    Name = reader["Name"].ToString(),
+                    Surname = reader["Surname"].ToString(),
+                    DataIscrizione = Convert.ToDateTime(reader["DataIscrizione"]),
+                    IdStudent = Convert.ToInt32(reader["IdStudente"]),
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Matricola = reader["Matricola"].ToString(),
+                };
+
+            }
         }
     }
 

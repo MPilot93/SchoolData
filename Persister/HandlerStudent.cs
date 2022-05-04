@@ -6,7 +6,7 @@ namespace Persister
 {
     public class HandlerStudent
     {
-        private readonly string connectionString = "Server=.;Database=Gestionale;Trusted_Connection=True;"; //LAPTOP-6U512VIE\SQLEXPRESS
+        private readonly  static string connectionString = "Server=.;Database=Gestionale;Trusted_Connection=True;"; //LAPTOP-6U512VIE\SQLEXPRESS
 
         public bool InsertStudent()
         {
@@ -18,8 +18,11 @@ namespace Persister
             };
 
             var persister = new StudentPersister(connectionString);
-            return persister.Add(student);
+            return persister.Add(student)>0;
         }
+
+
+        public static string GetConnectionString() => connectionString;
 
      
     }

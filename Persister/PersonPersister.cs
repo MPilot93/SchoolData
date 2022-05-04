@@ -11,36 +11,33 @@ namespace Persister
             ConnectionString = connectionString;
         }
 
-        public bool Add(Person person)
+        public int Add(Person person)
         {
             var sql = @"
                         INSERT INTO [dbo].[Person]
-                                   ([Id]
-                                   ,[Name]
+                                   ([Name]
                                    ,[Surname]
                                    ,[BirthDay]
                                    ,[Gender]
-                                   ,[Address]
+                                   ,[Address])
                                    
                              VALUES
-                                   (@Id
-                                   ,@IName
+                                   (@Name
                                    ,@Surname
                                    ,@BirthDay
                                    ,@Gender
-                                   ,@Address)";
+                                   ,@Address); SELECT @@IDENTITY AS 'Identity';  ";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@Id", person.Id);
             command.Parameters.AddWithValue("@Name", person.Name);
             command.Parameters.AddWithValue("@Surname", person.Surname);
             command.Parameters.AddWithValue("@BirthDay", person.Birthday);
             command.Parameters.AddWithValue("@Gender", person.Gender);
             command.Parameters.AddWithValue("@Address", person.Address);
 
-            return command.ExecuteNonQuery() > 0;
+            return Convert.ToInt32(command.ExecuteScalar());
         }
 
         public IEnumerable<Person> GetPerson(int Id)
