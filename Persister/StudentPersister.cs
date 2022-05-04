@@ -16,20 +16,23 @@ namespace Persister
             var sql = @"
                         INSERT INTO [dbo].[Student]
                                    ([IdStudent]
+                                   ,[IdPerson]
                                    ,[Matricola]
-                                   ,[Registration]
+                                   ,[DataIscrizione]
                                    
                              VALUES
                                    (@IdStudent
+                                   ,@IdPerson
                                    ,@Matricola
-                                   ,@Registration)";
+                                   ,@DataIscrizione)";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@IdStudent", student.IdStudent);
+            command.Parameters.AddWithValue("@IdPerson", student.IdPerson);
             command.Parameters.AddWithValue("@Matricola", student.Matricola);
-            command.Parameters.AddWithValue("@Registration", student.Registration);
+            command.Parameters.AddWithValue("@DataIscrizione", student.DataIscrizione);
             
             return command.ExecuteNonQuery() > 0;
         }
@@ -38,9 +41,10 @@ namespace Persister
         {
 
             var sql = @"
-                           [SELECT[IdStudent]
+                           SELECT [IdStudent]
+                          ,[IdPerson]
                           ,[Matricola]
-                          ,[Registration]
+                          ,[DataIscrizione]
 
 
                       FROM[dbo].[Student]";
@@ -55,9 +59,9 @@ namespace Persister
             {
                 yield return new Student
                 {
-                    Registration = Convert.ToDateTime(reader["Registration"]),
-
+                    DataIscrizione = Convert.ToDateTime(reader["DataIscrizione"]),
                     IdStudent = Convert.ToInt32(reader["IdStudent"]),
+                    IdPerson = Convert.ToInt32(reader["IdPerson"]),
                     Matricola = reader["Matricola"].ToString(),
                 };
 

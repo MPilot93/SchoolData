@@ -3,8 +3,8 @@ namespace SchoolLibrary
 {
     public class ExamDetails
     {
-        public int IdExamDet;
-        public int IdExam;
-        public int IdStudent;
+        public int IdExamDetails { get; set; }
+        public int IdExam { get; set; }
+        public int IdStudent { get; set; }
     }
 }

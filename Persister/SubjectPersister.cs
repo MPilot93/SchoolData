@@ -44,7 +44,7 @@ namespace Persister
         {
 
             var sql = @"
-                           [SELECT[IdSubject]
+                           SELECT[IdSubject]
                                    ,[Name]
                                    ,[Description]
                                    ,[Credits]

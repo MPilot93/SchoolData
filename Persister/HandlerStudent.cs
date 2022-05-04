@@ -14,7 +14,7 @@ namespace Persister
             {
                 IdStudent = 1,
                 Matricola = "1111",
-                Registration = new DateTime(2015, 1, 1),
+                DataIscrizione = new DateTime(2015, 1, 1),
             };
 
             var persister = new StudentPersister(connectionString);

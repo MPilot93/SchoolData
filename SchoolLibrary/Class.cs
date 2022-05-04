@@ -2,8 +2,8 @@
 {
      public class Class
     {
-        public int IdClass;
-        public int IdStudent;
-        public int IdLesson;
+        public int IdClass { get; set; }
+        public int IdStudent { get; set; }
+        public int IdLesson { get; set; }
     }
 }

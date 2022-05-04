@@ -16,20 +16,23 @@ namespace Persister
             var sql = @"
                         INSERT INTO [dbo].[Teacher]
                                    ([IdTeacher]
+                                   ,[IdPerson]
                                    ,[Matricola]
-                                   ,[Registration]
+                                   ,[DataAssunzione]
                                    
                              VALUES
                                    (@IdTeacher
+                                   ,@IdPerson
                                    ,@Matricola
-                                   ,@Registration)";
+                                   ,@DataAssunzione)";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@IdTeacher", teacher.IdTeacher);
+            command.Parameters.AddWithValue("@IdPerson", teacher.IdPerson);
             command.Parameters.AddWithValue("@Matricola", teacher.Matricola);
-            command.Parameters.AddWithValue("@Registration", teacher.Registration);
+            command.Parameters.AddWithValue("@DataAssunzione", teacher.DataAssunzione);
 
             return command.ExecuteNonQuery() > 0;
         }
@@ -38,9 +41,10 @@ namespace Persister
         {
 
             var sql = @"
-                           [SELECT[IdTeacher]
+                           SELECT [IdTeacher]
+                          ,[IdPerson]
                           ,[Matricola]
-                          ,[Registration]
+                          ,[DataAssunzione]
 
 
                       FROM[dbo].[Teacher]";
@@ -55,8 +59,8 @@ namespace Persister
             {
                 yield return new Teacher
                 {
-                    Registration = Convert.ToDateTime(reader["Registration"]),
-
+                    DataAssunzione = Convert.ToDateTime(reader["DataAssunzione"]),
+                    IdPerson = Convert.ToInt32((string)reader["IdPerson"]),
                     IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
                     Matricola = reader["Matricola"].ToString(),
                 };
