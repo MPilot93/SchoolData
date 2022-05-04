@@ -60,9 +60,7 @@ namespace Persister
                 {
                     IdLesson = Convert.ToInt32(reader["IdLesson"]),
                     IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
-                    IdSubject = Convert.ToInt32(reader["IdSubject"]),
-
-
+                    IdSubject = Convert.ToInt32(reader["IdSubject"])
                 };
 
             }
