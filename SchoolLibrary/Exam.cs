@@ -8,7 +8,7 @@ namespace SchoolLibrary
 
         public DateTime Date { get; set; }
 
-        public int IdSubject { get; set; };
+        public int IdSubject { get; set; }
 
 
     }

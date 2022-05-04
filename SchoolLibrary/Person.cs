@@ -1,5 +1,4 @@
-
-namespace SchoolData
+namespace SchoolLibrary
 {
     public class Person
     {

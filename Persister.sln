@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persister", "Persister\Persister.csproj", "{1A362144-9907-4CD7-BEA6-F11EDA020439}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolLibrary", "SchoolLibrary\SchoolLibrary.csproj", "{FE15D11A-F43C-4214-87AE-0AE11A3A3632}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A362144-9907-4CD7-BEA6-F11EDA020439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A362144-9907-4CD7-BEA6-F11EDA020439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A362144-9907-4CD7-BEA6-F11EDA020439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A362144-9907-4CD7-BEA6-F11EDA020439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE15D11A-F43C-4214-87AE-0AE11A3A3632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE15D11A-F43C-4214-87AE-0AE11A3A3632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE15D11A-F43C-4214-87AE-0AE11A3A3632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE15D11A-F43C-4214-87AE-0AE11A3A3632}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC883D01-0E0A-4660-9ADB-1B8015E46BAB}
+	EndGlobalSection
+EndGlobal

@@ -1,5 +1,4 @@
-
-namespace SchoolData.SchoolLibrary
+namespace SchoolLibrary
 {
     public class Student : Person
     {
