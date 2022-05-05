@@ -41,6 +41,17 @@ namespace Persister
         }
 
 
+        public bool Delete(int Id)
+        {
+            var sql = @"DELETE FROM [dbo].[Person]
+                        WHERE Id=@Id ";
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@Id", 1);
+            return command.ExecuteNonQuery() > 0;
+        }
+
         public Person GetPerson(int Id)
         {
             var sql = @"
