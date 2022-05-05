@@ -15,38 +15,57 @@ namespace Persister
         {
             var sql = @"
                         INSERT INTO [dbo].[Class]
-                                   ([IdClass]
-                                   ,[IdStudent]
+                                    [IdStudent]
                                    ,[IdLesson]
                               
                              
                                    
                              VALUES
-                                   (@IdClass
-                                   ,@IdStudent
-                                   ,@IdLesson)";
+                                    @IdStudent
+                                   ,@IdLesson;SELECT @@IDENTITY AS 'Identity';";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@IdClass", classroom.IdClass);
             command.Parameters.AddWithValue("@IdStudent", classroom.IdStudent);
             command.Parameters.AddWithValue("@IdLesson", classroom.IdLesson);
 
             return command.ExecuteNonQuery() > 0;
         }
 
-        public IEnumerable<Class> GetClass(int IdClass)
+        public Class GetClass(int IdClass)
+        {
+            var sql = @"SELECT 
+                      c.IdClass, c.IdStudent, c.IdLesson
+                      from Class c
+                      where c.IdClass=@IdClass";
+
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@IdClass", IdClass);
+            var reader = command.ExecuteReader();
+            Class result = null;
+            while (reader.Read())
+            {
+                result = new Class
+                {
+                    IdClass = Convert.ToInt32(reader["IdClass"]),
+                    IdStudent = Convert.ToInt32(reader["IdStudent"]),
+                    IdLesson = Convert.ToInt32(reader["IdLesson"]),
+                };
+
+            }
+            return result;
+        }
+        public IEnumerable<Class> GetClass()
         {
 
             var sql = @"
-                           SELECT[IdClass]
-                                   ,[IdStudent]
-                                   ,[IdLesson]
-                                   
-
-
-                      FROM[dbo].[Class]";
+                           SELECT
+                                c.IdClass, c.IdStudent, c.IdLesson
+                                from Class c";
 
 
             using var connection = new SqlConnection(ConnectionString);
@@ -54,6 +73,7 @@ namespace Persister
             using var command = new SqlCommand(sql, connection);
 
             var reader = command.ExecuteReader();
+            Class result=null;
             while (reader.Read())
             {
                 yield return new Class

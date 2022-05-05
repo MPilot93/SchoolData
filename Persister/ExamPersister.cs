@@ -35,7 +35,7 @@ namespace Persister
             return Convert.ToInt32(command.ExecuteScalar());
         }
 
-        public Subject GetExam(int IdExam)
+        public Exam GetExam(int IdExam)
         {
 
             var sql = @"SELECT 
@@ -56,7 +56,7 @@ namespace Persister
             {
                 result = new Exam
                 {
-                    IdExam = Convert.ToInt32(reader["IdSubject"]),
+                    IdExam = Convert.ToInt32(reader["IdExam"]),
                     IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
                     Date = Convert.ToDateTime(reader["Date"]),
                     IdSubject = Convert.ToInt32(reader["IdSubject"]),
@@ -67,7 +67,7 @@ namespace Persister
 
         }
 
-        public IEnumerable<Exam> GetExam(int IdExam)
+        public IEnumerable<Exam> GetExam()
         {
 
             var sql = @"

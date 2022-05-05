@@ -40,7 +40,43 @@ namespace Persister
             return Convert.ToInt32(command.ExecuteScalar());
         }
 
-        public IEnumerable<Person> GetPerson(int Id)
+
+        public Person GetPerson(int Id)
+        {
+            var sql = @"
+                           SELECT [Id]
+                                  ,[Name]
+                                  ,[Surname]
+                                  ,[BirthDay]
+                                  ,[Gender]
+                                  ,[Address]
+
+
+                      FROM[dbo].[Person]";
+
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@Id", Id);
+            var reader = command.ExecuteReader();
+            Person result = null;
+            while (reader.Read())
+            {
+                result = new Person
+                {
+
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"].ToString(),
+                    Surname = reader["Surname"].ToString(),
+                    Birthday = Convert.ToDateTime(reader["BirtDay"]),
+                    Gender = reader["Gender"].ToString(),
+                    Address = reader["Address"].ToString(),
+                };
+            }
+            return result;
+        }
+        public IEnumerable<Person> GetPerson()
         {
 
             var sql = @"

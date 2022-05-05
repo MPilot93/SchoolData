@@ -22,7 +22,7 @@ namespace Persister
                                    
                              VALUES
                                     @IdTeacher
-                                   ,@IdSubject)";
+                                   ,@IdSubject); SELECT @@IDENTITY AS 'Identity';";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
@@ -36,13 +36,13 @@ namespace Persister
         public Lesson GetLesson(int IdLesson)
         {
             var sql = @"
-                           SELECT   [IdLesson]
-                                   ,[IdTeacher]
-                                   ,[IdSubject]
-                                   
+                           SELECT  l.IdLesson, l.IdTeacher, l.IdSubject
+                           from Lesson l
+                           where l.IdLesson=@IdLesson";       
 
 
-                      FROM[dbo].[Lesson]";
+                      
+
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
@@ -51,11 +51,14 @@ namespace Persister
             Lesson result = null;
             while (reader.Read())
             {
-                IdLesson = Convert.ToInt32(reader["IdLesson"]),
-                IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
-                IdSubject = Convert.ToInt32(reader["IdSubject"])
-            };
-
+                result = new Lesson
+                {
+                    IdLesson = Convert.ToInt32(reader["IdLesson"]),
+                    IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
+                    IdSubject = Convert.ToInt32(reader["IdSubject"]),
+                };
+            }
+            return result;
         }
     
 
@@ -63,13 +66,8 @@ namespace Persister
         {
 
             var sql = @"
-                           SELECT[IdLesson]
-                                   ,[IdTeacher]
-                                   ,[IdSubject]
-                                   
-
-
-                      FROM[dbo].[Lesson]";
+                           SELECT  l.IdLesson, l.IdTeacher, l.IdSubject
+                           from Lesson l";
 
 
             using var connection = new SqlConnection(ConnectionString);

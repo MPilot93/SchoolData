@@ -15,7 +15,7 @@ namespace Persister
         {
             var sql = @"
                         INSERT INTO [dbo].[Subject]
-                                   [Name]
+                                    [Name]
                                    ,[Description]
                                    ,[Credits]
                                    ,[Hours]

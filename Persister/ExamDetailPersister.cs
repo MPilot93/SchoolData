@@ -15,13 +15,13 @@ namespace Persister
         {
             var sql = @"
                         INSERT INTO [dbo].[ExamDetails]
-                                   ,[IdExam]
+                                    [IdExam]
                                    ,[IdStudent]
                              
                                    
                              VALUES
                                    @IdExam
-                                   ,@IdStudent";
+                                   ,@IdStudent;SELECT @@IDENTITY AS 'Identity';";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
@@ -34,19 +34,17 @@ namespace Persister
 
         public ExamDetails GetExamDetails(int IdExamDetails)
         {
-            var sql = @"
-                           SELECT[IdExamDetails]
-                                   ,[IdExam]
-                                   ,[IdStudent]
-                                   
+            var sql = @"SELECT 
 
+                      e.IdExamDetails, e.IdExam, e.IdStudent
+                      from ExamDetails e
+                      where e.IdExamDetails=@IdExamDetails";
 
-                      FROM[dbo].[ExamDetails]";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@IdSubject", IdSubject);
+            command.Parameters.AddWithValue("@ExamDetails", IdExamDetails);
             var reader = command.ExecuteReader();
 
             ExamDetails result = null;
@@ -68,14 +66,10 @@ namespace Persister
         public IEnumerable<ExamDetails> GetExamDetails()
         {
 
-            var sql = @"
-                           SELECT[IdExamDetails]
-                                   ,[IdExam]
-                                   ,[IdStudent]
-                                   
+            var sql = @"SELECT 
 
-
-                      FROM[dbo].[ExamDetails]";
+                      e.IdExamDetails, e.IdExam, e.IdStudent
+                      from ExamDetails e";
 
 
             using var connection = new SqlConnection(ConnectionString);
@@ -83,6 +77,7 @@ namespace Persister
             using var command = new SqlCommand(sql, connection);
 
             var reader = command.ExecuteReader();
+            ExamDetails result = null;
             while (reader.Read())
             {
                 yield return new ExamDetails
