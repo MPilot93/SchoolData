@@ -11,32 +11,55 @@ namespace Persister
             ConnectionString = connectionString;
         }
 
-        public bool Add(Lesson lesson)
+        public int Add(Lesson lesson)
         {
             var sql = @"
                         INSERT INTO [dbo].[Lesson]
-                                   ([IdLesson]
-                                   ,[IdTeacher]
+                                    [IdTeacher]
                                    ,[IdSubject]
                               
                              
                                    
                              VALUES
-                                   (@IdLesson
-                                   ,@IdTeacher
+                                    @IdTeacher
                                    ,@IdSubject)";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@IdLesson", lesson.IdLesson);
             command.Parameters.AddWithValue("@IdTeacher", lesson.IdTeacher);
             command.Parameters.AddWithValue("@IdSubject", lesson.IdSubject);
 
-            return command.ExecuteNonQuery() > 0;
+            return Convert.ToInt32(command.ExecuteScalar());
         }
 
-        public IEnumerable<Lesson> GetLesson(int IdLesson)
+        public Lesson GetLesson(int IdLesson)
+        {
+            var sql = @"
+                           SELECT   [IdLesson]
+                                   ,[IdTeacher]
+                                   ,[IdSubject]
+                                   
+
+
+                      FROM[dbo].[Lesson]";
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@IdLesson", IdLesson);
+            var reader = command.ExecuteReader();
+            Lesson result = null;
+            while (reader.Read())
+            {
+                IdLesson = Convert.ToInt32(reader["IdLesson"]),
+                IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
+                IdSubject = Convert.ToInt32(reader["IdSubject"])
+            };
+
+        }
+    
+
+        public IEnumerable<Lesson> GetLesson()
         {
 
             var sql = @"

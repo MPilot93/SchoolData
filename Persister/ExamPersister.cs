@@ -11,31 +11,60 @@ namespace Persister
             ConnectionString = connectionString;
         }
 
-        public bool Add(Exam exam)
+        public int Add(Exam exam)
         {
             var sql = @"
                         INSERT INTO [dbo].[Exam]
-                                   ([IdExam]
                                    ,[IdTeacher]
                                    ,[Date]
                                    ,[IdSubject]
                              
                                    
                              VALUES
-                                   (@IdExam
-                                   ,@IdTeacher
+                                    @IdTeacher
                                    ,@Date
-                                   ,@IdSubject)";
+                                   ,@IdSubject); SELECT @@IDENTITY AS 'Identity'; ";
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
             using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@IdExam", exam.IdExam);
             command.Parameters.AddWithValue("@IdTeacher", exam.IdTeacher);
             command.Parameters.AddWithValue("@Date", exam.Date);
             command.Parameters.AddWithValue("@IdSubject", exam.IdSubject);
 
-            return command.ExecuteNonQuery() > 0;
+            return Convert.ToInt32(command.ExecuteScalar());
+        }
+
+        public Subject GetExam(int IdExam)
+        {
+
+            var sql = @"SELECT 
+                      e.IdExam, e.IdTeacher, e.Date, e.IdSubject
+                      from Exam e
+                      where e.IdExamt=@IdExam";
+
+
+
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@IdExam", IdExam);
+            var reader = command.ExecuteReader();
+            Exam result = null;
+            while (reader.Read())
+            {
+                result = new Exam
+                {
+                    IdExam = Convert.ToInt32(reader["IdSubject"]),
+                    IdTeacher = Convert.ToInt32(reader["IdTeacher"]),
+                    Date = Convert.ToDateTime(reader["Date"]),
+                    IdSubject = Convert.ToInt32(reader["IdSubject"]),
+                };
+
+            }
+            return result;
+
         }
 
         public IEnumerable<Exam> GetExam(int IdExam)

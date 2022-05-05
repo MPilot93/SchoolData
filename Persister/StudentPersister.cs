@@ -37,8 +37,11 @@ namespace Persister
         public Student GetStudent(int IdStudent)
         {
 
-            var sql = @"select p.Id,p.Name,p.Gender,p.Surname,p.BirthDay,p.Address,s.IdStudente,s.DataIscrizione,s.Matricola from Person p 
-                        join Student s on p.Id = s.IdPerson where s.IdStudente=@IdStudente";
+            var sql = @"select
+                        p.Id,p.Name,p.Gender,p.Surname,p.BirthDay,p.Address,
+                        s.IdStudente,s.DataIscrizione,s.Matricola   
+                        from Person p join Student s on p.Id = s.IdPerson 
+                        where s.IdStudente=@IdStudente";
 
 
             using var connection = new SqlConnection(ConnectionString);
@@ -98,6 +101,31 @@ namespace Persister
                 };
 
             }
+
+
+        //public bool Update(Student student)
+        //    {
+        //        var sql = @"UPDATE [dbo].[Student]
+        //       SET [Name] = @Name
+        //          ,[Surname] = @Surname
+        //          ,[BirthDay] = @BirthDay
+        //          ,[Gender] = @Gender
+        //          ,[Address] = @Gender
+
+        //          ,
+
+        //     WHERE @Id=Id";
+
+            //    using var connection = new SqlConnection(ConnectionString);
+            //    connection.Open();
+            //    using var command = new SqlCommand(sql, connection);
+            //    command.Parameters.AddWithValue("@Name", person.Name);
+            //    command.Parameters.AddWithValue("@Surname", person.Surname);
+            //    command.Parameters.AddWithValue("@BirthDay", person.Birthday);
+            //    command.Parameters.AddWithValue("@Gender", person.Gender);
+            //    command.Parameters.AddWithValue("@Id", person.Id);
+            //    return command.ExecuteNonQuery() > 0;
+            //}
         }
     }
 
@@ -114,22 +142,3 @@ namespace Persister
 //}
 
 
-//public bool Update(Person person)
-//{
-//    var sql = @"UPDATE [dbo].[Person]
-//               SET [Name] = @Name
-//                  ,[Surname] = @Surname
-//                  ,[BirthDay] = @BirthDay
-//                  ,[Gender] = @Gender
-//             WHERE @Id=Id";
-
-//    using var connection = new SqlConnection(ConnectionString);
-//    connection.Open();
-//    using var command = new SqlCommand(sql, connection);
-//    command.Parameters.AddWithValue("@Name", person.Name);
-//    command.Parameters.AddWithValue("@Surname", person.Surname);
-//    command.Parameters.AddWithValue("@BirthDay", person.Birthday);
-//    command.Parameters.AddWithValue("@Gender", person.Gender);
-//    command.Parameters.AddWithValue("@Id", person.Id);
-//    return command.ExecuteNonQuery() > 0;
-//}
